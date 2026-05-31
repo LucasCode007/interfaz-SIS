@@ -1,6 +1,6 @@
-import org.example.Estado;
-import org.example.TestCase;
-import org.example.UserStory;
+import org.example.model.Estado;
+import org.example.model.TestCase;
+import org.example.model.UserStory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
