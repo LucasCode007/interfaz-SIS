@@ -10,14 +10,15 @@ import static org.junit.jupiter.api.Assertions.*;
 class tddTest {
 
     private UserStory userStory;
-    private TestCase<Integer, Integer> testEnteroEntero;
-    private TestCase<String, Integer>  testStringEntero;
+    private TestCase testSuma;
+    private TestCase testContar;
 
     @BeforeEach
     void setUp() {
-        userStory          = new UserStory("US-01", "Gestión de tareas");
-        testEnteroEntero   = new TestCase<>("Verificar suma",    2,      4,    userStory);
-        testStringEntero   = new TestCase<>("Contar caracteres", "hola", 4,    userStory);
+        userStory  = new UserStory("US-01", "Gestión de tareas");
+        // Ahora las entradas y salidas se pasan como String
+        testSuma   = new TestCase("Verificar suma", "2", "4", userStory);
+        testContar = new TestCase("Contar caracteres", "hola", "4", userStory);
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -28,19 +29,19 @@ class tddTest {
     @Test
     @DisplayName("C1-T1: TestCase guarda el nombre correctamente")
     void testCase_debeGuardarNombre() {
-        assertEquals("Verificar suma", testEnteroEntero.getNombre());
+        assertEquals("Verificar suma", testSuma.getNombre());
     }
 
     @Test
-    @DisplayName("C1-T2: TestCase guarda la entrada esperada (tipo Integer)")
-    void testCase_debeGuardarEntradaEsperadaInteger() {
-        assertEquals(2, testEnteroEntero.getEntradaEsperada());
+    @DisplayName("C1-T2: TestCase guarda la entrada esperada (tipo String)")
+    void testCase_debeGuardarEntradaEsperadaString() {
+        assertEquals("2", testSuma.getEntradaEsperada());
     }
 
     @Test
     @DisplayName("C1-T3: TestCase guarda la salida esperada (tipo String)")
     void testCase_debeGuardarSalidaEsperadaString() {
-        assertEquals(4, testStringEntero.getSalidaEsperada());
+        assertEquals("4", testContar.getSalidaEsperada());
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -52,14 +53,14 @@ class tddTest {
     @DisplayName("C2-T4: TestCase creado sin UserStory lanza excepción")
     void testCase_sinUserStory_debeLanzarExcepcion() {
         assertThrows(IllegalArgumentException.class, () ->
-                new TestCase<>("Sin story", "entrada", "salida", null)
+                new TestCase("Sin story", "entrada", "salida", null)
         );
     }
 
     @Test
     @DisplayName("C2-T5: TestCase queda vinculado a su UserStory")
     void testCase_debeEstarVinculadoAUserStory() {
-        assertEquals(userStory, testEnteroEntero.getUserStory());
+        assertEquals(userStory, testSuma.getUserStory());
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -70,21 +71,21 @@ class tddTest {
     @Test
     @DisplayName("C3-T6: El estado inicial de un TestCase es RED")
     void testCase_estadoInicial_debeSerRed() {
-        assertEquals(Estado.RED, testEnteroEntero.getEstado());
+        assertEquals(Estado.RED, testSuma.getEstado());
     }
 
     @Test
     @DisplayName("C3-T7: El estado se puede actualizar a GREEN")
     void testCase_debePermitirCambioAGreen() {
-        testEnteroEntero.actualizarEstado(Estado.GREEN);
-        assertEquals(Estado.GREEN, testEnteroEntero.getEstado());
+        testSuma.actualizarEstado(Estado.GREEN);
+        assertEquals(Estado.GREEN, testSuma.getEstado());
     }
 
     @Test
     @DisplayName("C3-T8: El estado se puede actualizar a REFACTORIZADO")
     void testCase_debePermitirCambioARefactorizado() {
-        testEnteroEntero.actualizarEstado(Estado.REFACTORIZADO);
-        assertEquals(Estado.REFACTORIZADO, testEnteroEntero.getEstado());
+        testSuma.actualizarEstado(Estado.REFACTORIZADO);
+        assertEquals(Estado.REFACTORIZADO, testSuma.getEstado());
     }
 
     // ─────────────────────────────────────────────────────────────
@@ -95,15 +96,15 @@ class tddTest {
     @Test
     @DisplayName("C4-T9: UserStory no puede completarse si hay tests en RED")
     void userStory_conTestEnRed_noPuedeCompletarse() {
-        userStory.agregarTestCase(testEnteroEntero); // RED por defecto
+        userStory.agregarTestCase(testSuma); // RED por defecto
         assertFalse(userStory.completar());
     }
 
     @Test
     @DisplayName("C4-T10: UserStory puede completarse si todos los tests están en GREEN")
     void userStory_conTodosEnGreen_puedeCompletarse() {
-        testEnteroEntero.actualizarEstado(Estado.GREEN);
-        userStory.agregarTestCase(testEnteroEntero);
+        testSuma.actualizarEstado(Estado.GREEN);
+        userStory.agregarTestCase(testSuma);
         assertTrue(userStory.completar());
     }
 
@@ -115,15 +116,15 @@ class tddTest {
     @Test
     @DisplayName("C5-T11: contarPorEstado devuelve correctamente los tests en RED")
     void userStory_debeContarTestsEnRed() {
-        userStory.agregarTestCase(testEnteroEntero); // RED por defecto
+        userStory.agregarTestCase(testSuma); // RED por defecto
         assertEquals(1, userStory.contarPorEstado(Estado.RED));
     }
 
     @Test
     @DisplayName("C5-T12: contarPorEstado devuelve correctamente los tests en GREEN")
     void userStory_debeContarTestsEnGreen() {
-        testEnteroEntero.actualizarEstado(Estado.GREEN);
-        userStory.agregarTestCase(testEnteroEntero);
+        testSuma.actualizarEstado(Estado.GREEN);
+        userStory.agregarTestCase(testSuma);
         assertEquals(1, userStory.contarPorEstado(Estado.GREEN));
     }
 }

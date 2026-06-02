@@ -1,14 +1,14 @@
 package org.example.model;
 
-public class TestCase<I, O> {
+public class TestCase {
 
     private String nombre;
-    private I entradaEsperada;
-    private O salidaEsperada;
+    private String entradaEsperada;
+    private String salidaEsperada;
     private Estado estado;
     private UserStory userStory;
 
-    public TestCase(String nombre, I entradaEsperada, O salidaEsperada, UserStory userStory) {
+    public TestCase(String nombre, String entradaEsperada, String salidaEsperada, UserStory userStory) {
         if (userStory == null) {
             throw new IllegalArgumentException("Un TestCase debe estar vinculado a una UserStory.");
         }
@@ -28,8 +28,8 @@ public class TestCase<I, O> {
     }
 
     public String getNombre()          { return nombre; }
-    public I getEntradaEsperada()      { return entradaEsperada; }
-    public O getSalidaEsperada()       { return salidaEsperada; }
+    public String getEntradaEsperada() { return entradaEsperada; }
+    public String getSalidaEsperada()  { return salidaEsperada; }
     public Estado getEstado()          { return estado; }
     public UserStory getUserStory()    { return userStory; }
 }

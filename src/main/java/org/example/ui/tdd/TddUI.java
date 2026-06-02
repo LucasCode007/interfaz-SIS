@@ -17,14 +17,14 @@ public class TddUI {
 
     // ── Estado global ─────────────────────────────────────────────
     private final ObservableList<UserStory> listaUS        = FXCollections.observableArrayList();
-    private final ObservableList<TestCase<String, String>> listaTests = FXCollections.observableArrayList();
+    private final ObservableList<TestCase> listaTests = FXCollections.observableArrayList();
     private UserStory usActiva = null;
 
     // ── Labels que se actualizan dinámicamente ────────────────────
     private Label lblUSActiva;
     private Label lblConteo;
     private Label lblResultadoCompletar;
-    private ListView<TestCase<String, String>> listViewTests;
+    private ListView<TestCase> listViewTests;
 
     public void show(Stage stage) {
 
@@ -102,7 +102,7 @@ public class TddUI {
         listViewTests.setPrefHeight(160);
         listViewTests.setCellFactory(lv -> new ListCell<>() {
             @Override
-            protected void updateItem(TestCase<String, String> tc, boolean empty) {
+            protected void updateItem(TestCase tc, boolean empty) {
                 super.updateItem(tc, empty);
                 if (empty || tc == null) { setText(null); setStyle(""); }
                 else {
@@ -130,7 +130,7 @@ public class TddUI {
         btnCambiar.setDisable(true);
 
         btnCambiar.setOnAction(e -> {
-            TestCase<String, String> sel = listViewTests.getSelectionModel().getSelectedItem();
+            TestCase sel = listViewTests.getSelectionModel().getSelectedItem(); // Modificado
             if (sel == null) {
                 lblErrorCambio.setText("⚠ Selecciona un test de la lista.");
                 return;
@@ -226,7 +226,7 @@ public class TddUI {
         usActiva = us;
         lblUSActiva.setText("TestCases de: " + us.getId() + " — " + us.getTitulo());
         listaTests.clear();
-        us.getTestCases().forEach(tc -> listaTests.add((TestCase<String, String>) tc));
+        listaTests.addAll(us.getTestCases()); // Modificado: Eliminado el casteo, es más limpio
         lblResultadoCompletar.setText("");
         actualizarConteo();
     }
@@ -239,7 +239,7 @@ public class TddUI {
             lblError.setText("⚠ El nombre es obligatorio.");
             return;
         }
-        TestCase<String, String> tc = new TestCase<>(
+        TestCase tc = new TestCase(
                 txtNombre.getText().trim(),
                 txtEntrada.getText().trim(),
                 txtSalida.getText().trim(),

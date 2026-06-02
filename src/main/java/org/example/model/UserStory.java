@@ -8,7 +8,7 @@ public class UserStory {
     private String id;
     private String titulo;
     private boolean completada;
-    private List<TestCase<?, ?>> testCases;
+    private List<TestCase> testCases; // Modificado: sin genéricos
 
     public UserStory(String id, String titulo) {
         this.id         = id;
@@ -17,7 +17,7 @@ public class UserStory {
         this.testCases  = new ArrayList<>();
     }
 
-    public void agregarTestCase(TestCase<?, ?> testCase) {
+    public void agregarTestCase(TestCase testCase) { // Modificado: sin genéricos
         testCases.add(testCase);
     }
 
@@ -27,9 +27,13 @@ public class UserStory {
     }
 
     public boolean completar() {
-        if (!todosEnGreen()) return false;
+        if (!puedeCompletarse()) return false;
         this.completada = true;
         return true;
+    }
+
+    private boolean puedeCompletarse() {
+        return !testCases.isEmpty() && todosEnGreen();
     }
 
     public int contarPorEstado(Estado estado) {
@@ -42,7 +46,8 @@ public class UserStory {
     public String getId()          { return id; }
     public String getTitulo()      { return titulo; }
     public boolean isCompletada()  { return completada; }
-    public List<TestCase<?, ?>> getTestCases(){
+
+    public List<TestCase> getTestCases(){ // Modificado: sin genéricos
         return testCases;
     }
 }
