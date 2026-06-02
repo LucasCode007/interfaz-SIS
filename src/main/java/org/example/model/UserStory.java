@@ -42,4 +42,7 @@ public class UserStory {
     public String getId()          { return id; }
     public String getTitulo()      { return titulo; }
     public boolean isCompletada()  { return completada; }
+    public List<TestCase<?, ?>> getTestCases(){
+        return testCases;
+    }
 }
