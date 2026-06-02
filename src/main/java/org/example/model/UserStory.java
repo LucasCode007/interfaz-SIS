@@ -27,9 +27,13 @@ public class UserStory {
     }
 
     public boolean completar() {
-        if (!todosEnGreen()) return false;
+        if (!puedeCompletarse()) return false;
         this.completada = true;
         return true;
+    }
+
+    private boolean puedeCompletarse() {
+        return !testCases.isEmpty() && todosEnGreen();
     }
 
     public int contarPorEstado(Estado estado) {
